@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    
+    tools{
+       nodejs 'nodejs-10'
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/silviojpa/demo_nodejs_webpage.git'
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                sh "npm install"
+            }
+        }
+        
+        stage('OWASP Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                  withDockerRegistry(credentialsId: '09be2bc8-8c62-48be-87a8-86e72a439f72', toolName: 'docker') {
+                        
+                        
+                        sh "docker build -t demonodejs ."
+                        sh "docker tag demonodejs silvio69luiz/nodejs:latest"
+                        sh "docker push silvio69luiz/nodejs:latest"
+                  }
+                  
+                }
+            }
+        }
+    }        
+}    
