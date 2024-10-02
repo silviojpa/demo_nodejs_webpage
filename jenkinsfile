@@ -47,7 +47,7 @@ pipeline {
                   withDockerRegistry(credentialsId: 'f45e0e3c-4b75-4952-9ab0-c00ff2c9b820', toolName: 'docker') {
                         
                         
-                        sh "docker run -d --name demo_nodejs - 8081:8081 "
+                        sh "docker run -d --name demo_nodejs -p 8081:8081 silvio69luiz/nodejs:latest"
                         
                   }
     
