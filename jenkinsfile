@@ -28,16 +28,31 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                  withDockerRegistry(credentialsId: '09be2bc8-8c62-48be-87a8-86e72a439f72', toolName: 'docker') {
+                  withDockerRegistry(credentialsId: 'f45e0e3c-4b75-4952-9ab0-c00ff2c9b820', toolName: 'docker') {
                         
                         
                         sh "docker build -t demonodejs ."
                         sh "docker tag demonodejs silvio69luiz/nodejs:latest"
                         sh "docker push silvio69luiz/nodejs:latest"
+                        
                   }
-                  
-                }
-            }
+    
+                }    
+            }    
         }
-    }        
-}    
+        
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                  withDockerRegistry(credentialsId: 'f45e0e3c-4b75-4952-9ab0-c00ff2c9b820', toolName: 'docker') {
+                        
+                        
+                        sh "docker run -d --name demo_nodejs - 8081:8081 "
+                        
+                  }
+    
+                }    
+            }    
+        }
+    }
+}
