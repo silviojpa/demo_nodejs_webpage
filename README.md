@@ -29,7 +29,7 @@ Como fazer:
         docker: Nome do grupo Docker.
         $USER: Variável que representa o nome do seu usuário atual.
 
-3 - Instale o jenkins na máquina:
+3 - Instale o jenkins na máquina e add ao grupo docker o jenkins:
 
 Pré-requisitos:
 
